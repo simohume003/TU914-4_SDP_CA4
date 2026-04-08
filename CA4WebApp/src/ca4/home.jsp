@@ -1,9 +1,12 @@
+<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ page import="java.util.List" %>
+<%@ page import="entities.Product" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Loops and Looms </title>
+    <title>Loops and Looms</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -63,6 +66,14 @@
             line-height: 150px;
             margin-bottom: 10px;
             border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
         }
 
         .product-card h3 {
@@ -96,7 +107,7 @@
 
     <header>
         <h1>Loops and Looms</h1>
-        <p>Fashion ""compiled" perfectly</p>
+        <p>Fashion “compiled” perfectly</p>
     </header>
 
     <div class="top-bar">
@@ -110,61 +121,34 @@
         <h2>Shop Items</h2>
 
         <div class="product-grid">
-            <div class="product-card">
-                <div class="product-image">Image</div>
-                <h3>T-Shirt</h3>
-                <p>€20</p>
-                <button>Add to Cart</button>
-            </div>
-
-            <div class="product-card">
-                <div class="product-image">Image</div>
-                <h3>Hoodie</h3>
-                <p>€35</p>
-                <button>Add to Cart</button>
-            </div>
-
-            <div class="product-card">
-                <div class="product-image">Image</div>
-                <h3>Jeans</h3>
-                <p>€40</p>
-                <button>Add to Cart</button>
-            </div>
-
-            <div class="product-card">
-                <div class="product-image">Image</div>
-                <h3>Jacket</h3>
-                <p>€55</p>
-                <button>Add to Cart</button>
-            </div>
-
-            <div class="product-card">
-                <div class="product-image">Image</div>
-                <h3>Sweater</h3>
-                <p>€30</p>
-                <button>Add to Cart</button>
-            </div>
-
-            <div class="product-card">
-                <div class="product-image">Image</div>
-                <h3>Tracksuit</h3>
-                <p>€45</p>
-                <button>Add to Cart</button>
-            </div>
-
-            <div class="product-card">
-                <div class="product-image">Image</div>
-                <h3>Cap</h3>
-                <p>€15</p>
-                <button>Add to Cart</button>
-            </div>
-
-            <div class="product-card">
-                <div class="product-image">Image</div>
-                <h3>Shorts</h3>
-                <p>€25</p>
-                <button>Add to Cart</button>
-            </div>
+            <%
+                List<Product> products = (List<Product>) request.getAttribute("products");
+                if (products != null && !products.isEmpty()) {
+                    for (Product p : products) {
+            %>
+                <div class="product-card">
+                    <div class="product-image">
+                        <% if (p.getImageUrl() != null && !p.getImageUrl().isEmpty()) { %>
+                            <img src="<%= p.getImageUrl() %>" alt="<%= p.getTitle() %>">
+                        <% } else { %>
+                            Image
+                        <% } %>
+                    </div>
+                    <h3><%= p.getTitle() %></h3>
+                    <p><strong>Manufacturer:</strong> <%= p.getManufacturer() %></p>
+                    <p><strong>Category:</strong> <%= p.getCategory() %></p>
+                    <p><strong>Price:</strong> €<%= p.getPrice() %></p>
+                    <p><strong>Stock:</strong> <%= p.getStockQuantity() %></p>
+                    <button>Add to Cart</button>
+                </div>
+            <%
+                    }
+                } else {
+            %>
+                <p>No products found.</p>
+            <%
+                }
+            %>
         </div>
     </div>
 
