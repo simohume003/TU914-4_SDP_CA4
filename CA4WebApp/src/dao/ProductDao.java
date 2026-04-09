@@ -50,4 +50,10 @@ public class ProductDao {
         em.close();
         return productsFromDB;
     }
+    public Product getProductById(int id) {
+        EntityManager em = emf.createEntityManager();
+        Product product = em.find(Product.class, id);
+        em.close();
+        return product;
+    }
 }
