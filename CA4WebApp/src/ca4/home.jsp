@@ -1,8 +1,12 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page import="java.util.List" %>
 <%@ page import="entities.Product" %>
+<%@ page import="entities.Customer" %>
 <!DOCTYPE html>
 <html lang="en">
+<%
+    Customer customer = (Customer) session.getAttribute("customer");
+%>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -29,6 +33,7 @@
             justify-content: center;
             gap: 10px;
             flex-wrap: wrap;
+         
         }
 
         .top-bar input[type="text"] {
@@ -100,6 +105,12 @@
             .product-grid {
                 grid-template-columns: 1fr;
             }
+            .login-status {
+   				 text-align: center;
+   				 padding: 10px;
+   				 background-color: #eee;
+    				font-weight: bold;
+					}
         }
     </style>
 </head>
@@ -112,9 +123,16 @@
 
     <div class="top-bar">
         <input type="text" placeholder="Search for clothes...">
-        <button>Customer Login</button>
-        <button>Admin Login</button>
+        <button onclick="window.location.href='auth'">Customer Login</button>
+        <button onclick="window.location.href='adminProduct'">Admin Login</button>
         <button>Shopping Cart</button>
+    </div>
+    <div class="login-status">
+        <% if (customer != null) { %>
+            Signed in as: <strong><%= customer.getEmail() %></strong>
+        <% } else { %>
+            Not signed in
+        <% } %>
     </div>
 
     <div class="main-content">
