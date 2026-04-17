@@ -7,6 +7,9 @@
 <persistence-unit name="jpaPU">
 		<class>entities.Product</class>
 		<class>entities.Customer</class>
+		<class>entities.CartItem</class>
+		<class>entities.Order</class>
+		<class>entities.OrderItem</class>
         
     <properties>
         <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect"/>

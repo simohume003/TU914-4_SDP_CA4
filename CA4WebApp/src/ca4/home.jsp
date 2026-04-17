@@ -125,7 +125,7 @@
         <input type="text" placeholder="Search for clothes...">
         <button onclick="window.location.href='auth'">Customer Login</button>
         <button onclick="window.location.href='adminProduct'">Admin Login</button>
-        <button>Shopping Cart</button>
+        <button onclick="window.location.href='cart'">Shopping Cart</button>
     </div>
     <div class="login-status">
         <% if (customer != null) { %>
@@ -157,7 +157,11 @@
                     <p><strong>Category:</strong> <%= p.getCategory() %></p>
                     <p><strong>Price:</strong> €<%= p.getPrice() %></p>
                     <p><strong>Stock:</strong> <%= p.getStockQuantity() %></p>
-                    <button>Add to Cart</button>
+                    <form action="cart" method="post">
+    <input type="hidden" name="action" value="add">
+    <input type="hidden" name="productId" value="<%= p.getId() %>">
+    <button type="submit">Add to Cart</button>
+</form>
                 </div>
             <%
                     }
