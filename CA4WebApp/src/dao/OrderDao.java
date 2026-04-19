@@ -3,6 +3,7 @@ package dao;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import java.util.List;
 
 import entities.Order;
 
@@ -36,5 +37,11 @@ public class OrderDao {
         Order order = em.find(Order.class, id);
         em.close();
         return order;
+    }
+    public List<Order> getAllOrders() {
+        EntityManager em = emf.createEntityManager();
+        List<Order> orders = em.createQuery("SELECT o FROM Order o", Order.class).getResultList();
+        em.close();
+        return orders;
     }
 }

@@ -3,6 +3,7 @@ package dao;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.NamedQuery;
 import javax.persistence.Persistence;
 
 import entities.Customer;
@@ -50,5 +51,11 @@ public class CustomerDao {
             return null;
         }
         return customers.get(0);
+    }
+    public List<Customer> getAllCustomers() {
+        EntityManager em = emf.createEntityManager();
+        List<Customer> customers = em.createNamedQuery("Customer.findAll", Customer.class).getResultList();
+        em.close();
+        return customers;
     }
 }

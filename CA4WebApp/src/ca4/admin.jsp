@@ -1,6 +1,8 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page import="java.util.List" %>
 <%@ page import="entities.Product" %>
+<%@ page import="entities.Customer" %>
+<%@ page import="entities.Order" %>
 
 <!DOCTYPE html>
 <html>
@@ -173,6 +175,82 @@
             }
         %>
     </div>
+    <div class="table-container">
+    <h2>Customers</h2>
+
+    <%
+        List<Customer> customers = (List<Customer>) request.getAttribute("customers");
+        if (customers != null && !customers.isEmpty()) {
+    %>
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Email</th>
+            </tr>
+
+            <%
+                for (Customer c : customers) {
+            %>
+            <tr>
+                <td><%= c.getId() %></td>
+                <td><%= c.getEmail() %></td>
+            </tr>
+            <%
+                }
+            %>
+        </table>
+    <%
+        } else {
+    %>
+        <p>No customers found.</p>
+    <%
+        }
+    %>
+</div>
+<div class="table-container">
+    <h2>Orders / Purchase History</h2>
+
+    <%
+        List<Order> orders = (List<Order>) request.getAttribute("orders");
+        if (orders != null && !orders.isEmpty()) {
+    %>
+        <table>
+            <tr>
+                <th>Order ID</th>
+                <th>Customer Email</th>
+                <th>Order Date</th>
+                <th>Shipping Address</th>
+                <th>City</th>
+                <th>County</th>
+                <th>Payment Method</th>
+                <th>Total Amount</th>
+            </tr>
+
+            <%
+                for (Order o : orders) {
+            %>
+            <tr>
+                <td><%= o.getId() %></td>
+                <td><%= o.getCustomer().getEmail() %></td>
+                <td><%= o.getOrderDate() %></td>
+                <td><%= o.getShippingAddress() %></td>
+                <td><%= o.getCity() %></td>
+                <td><%= o.getCounty() %></td>
+                <td><%= o.getPaymentMethod() %></td>
+                <td>€<%= o.getTotalAmount() %></td>
+            </tr>
+            <%
+                }
+            %>
+        </table>
+    <%
+        } else {
+    %>
+        <p>No orders found.</p>
+    <%
+        }
+    %>
+</div>
 
 </body>
 </html>

@@ -11,18 +11,29 @@ import javax.servlet.http.HttpServletResponse;
 
 import dao.ProductDao;
 import entities.Product;
+import dao.CustomerDao;
+import dao.OrderDao;
+import entities.Customer;
+import entities.Order;
 
 @WebServlet("/adminProduct")
 public class AdminProductServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     private ProductDao dao = new ProductDao();
+    private CustomerDao customerDao = new CustomerDao();
+    private OrderDao orderDao = new OrderDao();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         List<Product> products = dao.getAllProducts();
+        List<Customer> customers = customerDao.getAllCustomers();
+        List<Order> orders = orderDao.getAllOrders();
         request.setAttribute("products", products);
+        request.setAttribute("customers", customers);
+        request.setAttribute("orders", orders);
+
         request.getRequestDispatcher("/admin.jsp").forward(request, response);
     }
 
