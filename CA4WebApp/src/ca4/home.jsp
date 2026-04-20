@@ -2,6 +2,8 @@
 <%@ page import="java.util.List" %>
 <%@ page import="entities.Product" %>
 <%@ page import="entities.Customer" %>
+<%@ page import="java.util.Map" %>
+<%@ page import="entities.Review" %>
 <!DOCTYPE html>
 <html lang="en">
 <%
@@ -45,6 +47,9 @@
             padding: 8px 14px;
             cursor: pointer;
         }
+        .top-bar select {
+    padding: 8px;
+}
 
         .main-content {
             padding: 30px;
@@ -66,12 +71,11 @@
 
         .product-image {
             width: 100%;
-            height: 150px;
+            height: 300px;
             background-color: #e0e0e0;
             line-height: 150px;
             margin-bottom: 10px;
             border-radius: 5px;
-            overflow: hidden;
         }
 
         .product-image img {
@@ -94,6 +98,13 @@
             padding: 8px 12px;
             cursor: pointer;
         }
+        .reviews-section {
+    margin-top: 10px;
+    font-size: 14px;
+    background-color: #fafafa;
+    padding: 8px;
+    border-radius: 5px;
+}
 
         @media (max-width: 900px) {
             .product-grid {
@@ -122,10 +133,31 @@
     </header>
 
     <div class="top-bar">
-        <input type="text" placeholder="Search for clothes...">
+       <form action="products" method="get" style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+    <input type="text" name="search" placeholder="Search for clothes...">
+
+    <select name="filter">
+        <option value="title">Title</option>
+        <option value="category">Category</option>
+        <option value="manufacturer">Manufacturer</option>
+    </select>
+
+    <select name="sort">
+        <option value="">No Sort</option>
+        <option value="priceAsc">Price Low-High</option>
+        <option value="priceDesc">Price High-Low</option>
+        <option value="titleAsc">Title A-Z</option>
+        <option value="titleDesc">Title Z-A</option>
+        <option value="manufacturerAsc">Manufacturer A-Z</option>
+        <option value="manufacturerDesc">Manufacturer Z-A</option>
+    </select>
+
+    <button type="submit">Search</button>
+</form>
         <button onclick="window.location.href='auth'">Customer Login</button>
-        <button onclick="window.location.href='adminProduct'">Admin Login</button>
+        <a href="adminlogin.jsp"><button >Admin Login</button></a>
         <button onclick="window.location.href='cart'">Shopping Cart</button>
+        <button onclick="window.location.href='review'">Leave Review</button>
     </div>
     <div class="login-status">
         <% if (customer != null) { %>
@@ -157,6 +189,43 @@
                     <p><strong>Category:</strong> <%= p.getCategory() %></p>
                     <p><strong>Price:</strong> €<%= p.getPrice() %></p>
                     <p><strong>Stock:</strong> <%= p.getStockQuantity() %></p>
+                    <%
+    Map<Integer, List<Review>> reviewsMap =
+        (Map<Integer, List<Review>>) request.getAttribute("reviewsMap");
+
+ List<Review> reviews = (reviewsMap != null) ? reviewsMap.get(p.getId()) : null;
+%>
+<div class="reviews-section">
+
+<%
+    if (reviews != null && !reviews.isEmpty()) {
+
+        double avg = 0;
+        for (Review r : reviews) {
+            avg += r.getRating();
+        }
+        avg = avg / reviews.size();
+%>
+
+    <p><strong>⭐ Rating:</strong> <%= String.format("%.1f", avg) %> / 5</p>
+
+    <%
+        for (Review r : reviews) {
+    %>
+        <p>"<%= r.getComment() %>" — <%= r.getCustomer().getEmail() %></p>
+    <%
+        }
+    %>
+
+<%
+    } else {
+%>
+    <p>No reviews yet</p>
+<%
+    }
+%>
+
+</div>
                     <form action="cart" method="post">
     <input type="hidden" name="action" value="add">
     <input type="hidden" name="productId" value="<%= p.getId() %>">
