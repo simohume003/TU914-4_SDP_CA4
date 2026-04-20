@@ -56,5 +56,44 @@ public class ProductDao {
         em.close();
         return product;
     }
+    public List<Product> searchAndSortProducts(String search, String filter, String sort) {
+        EntityManager em = emf.createEntityManager();
+
+        String query = "SELECT p FROM Product p WHERE 1=1";
+
+        if (search != null && !search.trim().isEmpty()) {
+            if ("title".equals(filter)) {
+                query += " AND LOWER(p.title) LIKE :search";
+            } else if ("category".equals(filter)) {
+                query += " AND LOWER(p.category) LIKE :search";
+            } else if ("manufacturer".equals(filter)) {
+                query += " AND LOWER(p.manufacturer) LIKE :search";
+            }
+        }
+
+        if ("priceAsc".equals(sort)) {
+            query += " ORDER BY p.price ASC";
+        } else if ("priceDesc".equals(sort)) {
+            query += " ORDER BY p.price DESC";
+        } else if ("titleAsc".equals(sort)) {
+            query += " ORDER BY p.title ASC";
+        } else if ("titleDesc".equals(sort)) {
+            query += " ORDER BY p.title DESC";
+        } else if ("manufacturerAsc".equals(sort)) {
+            query += " ORDER BY p.manufacturer ASC";
+        } else if ("manufacturerDesc".equals(sort)) {
+            query += " ORDER BY p.manufacturer DESC";
+        }
+
+        javax.persistence.TypedQuery<Product> q = em.createQuery(query, Product.class);
+
+        if (search != null && !search.trim().isEmpty()) {
+            q.setParameter("search", "%" + search.toLowerCase() + "%");
+        }
+
+        List<Product> products = q.getResultList();
+        em.close();
+        return products;
+    }
     
 }
