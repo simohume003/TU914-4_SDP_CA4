@@ -27,7 +27,22 @@ public class AdminProductServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        List<Product> products = dao.getAllProducts();
+    	String search = request.getParameter("search");
+
+        String filter = request.getParameter("filter");
+
+        String sort = request.getParameter("sort");
+
+        List<Product> products;
+
+        if ((search != null && !search.trim().isEmpty()) || (sort != null && !sort.trim().isEmpty())) {
+
+            products = dao.searchAndSortProducts(search, filter, sort);
+
+        } else {
+
+            products = dao.getAllProducts();
+        }
         List<Customer> customers = customerDao.getAllCustomers();
         List<Order> orders = orderDao.getAllOrders();
         request.setAttribute("products", products);
