@@ -60,6 +60,7 @@
         <input type="text" name="paymentMethod" required>
 
         <button type="submit">Confirm Order</button>
+        <button onclick="window.location.href='review'">Leave Review</button>
     </form>
 </div>
 

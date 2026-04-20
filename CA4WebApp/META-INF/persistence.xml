@@ -10,6 +10,7 @@
 		<class>entities.CartItem</class>
 		<class>entities.Order</class>
 		<class>entities.OrderItem</class>
+		<class>entities.Review</class>
         
     <properties>
         <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect"/>

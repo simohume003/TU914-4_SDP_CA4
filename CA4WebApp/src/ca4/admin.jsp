@@ -84,6 +84,8 @@
 <body>
 
     <h1>Admin Page</h1>
+            <button onclick="window.location.href='products'">Home</button>
+    
 
     <div class="form-container">
         <h2>Add New Product</h2>
@@ -117,6 +119,27 @@
 
     <div class="table-container">
         <h2>Current Products</h2>
+        <form action="adminProduct" method="get" style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:15px;">
+    <input type="text" name="search" placeholder="Search products...">
+
+    <select name="filter">
+        <option value="title">Title</option>
+        <option value="category">Category</option>
+        <option value="manufacturer">Manufacturer</option>
+    </select>
+
+    <select name="sort">
+        <option value="">No Sort</option>
+        <option value="priceAsc">Price Low-High</option>
+        <option value="priceDesc">Price High-Low</option>
+        <option value="titleAsc">Title A-Z</option>
+        <option value="titleDesc">Title Z-A</option>
+        <option value="manufacturerAsc">Manufacturer A-Z</option>
+        <option value="manufacturerDesc">Manufacturer Z-A</option>
+    </select>
+
+    <button type="submit">Search</button>
+</form>
 
         <%
             List<Product> products = (List<Product>) request.getAttribute("products");
